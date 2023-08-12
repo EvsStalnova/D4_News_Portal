@@ -9,20 +9,45 @@ class PostFilter(django_filters.FilterSet):
     FilterSet, который мы наследуем, должен чем-то напомнить знакомые вам Django дженерики.
     """
     # поиск по названию
-    title = django_filters.CharFilter(field_name='title', lookup_expr='icontains', label='Заголовок',
-                                      widget=forms.TextInput(attrs={'placeholder': 'Поиск по названию'}))
+    title = django_filters.CharFilter(
+        field_name='title',
+        lookup_expr='icontains',
+        label='Заголовок',
+        widget=forms.TextInput(attrs={'placeholder': 'Поиск по названию'})
+
+    )
     # # поиск по автору
-    author = django_filters.ModelChoiceFilter(field_name='author', empty_label='Все авторы', label='Авторы',
-                                              queryset=Author.objects.all())
+    author = django_filters.ModelChoiceFilter(
+        field_name='author',
+        empty_label='Все авторы',
+        label='Авторы',
+        queryset=Author.objects.all()
+
+    )
     # поиск по типу
-    type = django_filters.ChoiceFilter(field_name='type', empty_label='Все типы', label='Тип',
-                                       choices=Post.CATEGOY_CHOICES)
+    post_type = django_filters.ChoiceFilter(
+        field_name='post_type',
+        empty_label='Все типы',
+        label='Тип',
+        choices=Post.POST_TYPES
+
+    )
     # поиск по категории
-    postCategory = django_filters.ModelChoiceFilter(field_name='postCategory', empty_label='Все категории',
-                                                    label='Категория', queryset=Category.objects.all())
+    categories = django_filters.ModelChoiceFilter(
+        field_name='categories',
+        empty_label='Все категории',
+        label='Категория',
+        queryset=Category.objects.all()
+
+    )
     # поиск по дате
-    creationDate = django_filters.DateFilter(field_name='creationDate', lookup_expr='gte', label='Дата',
-                                             widget=forms.DateInput(attrs={'type': 'date'}))
+    created_at = django_filters.DateFilter(
+        field_name='created_at',
+        lookup_expr='gte', label='Дата',
+        widget=forms.DateInput(attrs={'type': 'date'})
+
+
+    )
 
     class Meta:
         """
@@ -30,4 +55,4 @@ class PostFilter(django_filters.FilterSet):
         """
         model = Post
         # В fields мы описываем по каким полям модели будет производиться фильтрация.
-        fields = ['type', 'author', 'title', 'postCategory', 'creationDate']
+        fields = ['post_type', 'author', 'title', 'categories', 'created_at']

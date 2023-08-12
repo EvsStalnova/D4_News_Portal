@@ -1,113 +1,90 @@
-from django.contrib.auth.models import User
-from django.db import models
-from django.db.models import Sum
+from django.db import models  # Импортируем модуль models из Django для определения моделей базы данных
+from django.contrib.auth.models import User  # Импортируем модель User из модуля auth Django
+from django.db.models import Sum  # Импортируем функцию Sum из модуля models Django для агрегации суммы значений
 from django.urls import reverse
 
 
-# Создавайте свои модели здесь.
-class Author(models.Model):
-    """
-    Метод update_rating() вычисляет суммарный рейтинг каждой статьи автора,
-    умножает его на 3, а затем складывает с суммарным рейтингом всех комментариев автора
-    и комментариев к статьям автора.
-    Результат сохраняется в поле rating объекта Author
-    """
+class Author(models.Model):  # Определяем модель Author, наследуясь от models.Model
+    user = models.OneToOneField(User, on_delete=models.CASCADE)  # Поле user типа OneToOneField, связанное с моделью User
+    rating = models.IntegerField(default=0)  # Поле rating типа IntegerField с значением по умолчанию 0
 
-    autUser = models.OneToOneField(User, on_delete=models.CASCADE)
-    ratingAut = models.SmallIntegerField(default=0)
+    def update_rating(self):  # Определяем метод update_rating
+        post_rating = self.post_set.aggregate(post_rating=Sum('rating'))['post_rating'] or 0  # Сумма рейтингов всех постов автора
+        comment_rating = self.user.comment_set.aggregate(comment_rating=Sum('rating'))['comment_rating'] or 0  # Сумма рейтингов всех комментариев пользователя
 
-    def update_rating(self):
-        # Вычисление суммарного рейтинга статей автора
-        post_sum = self.post_set.aggregate(postRating=Sum('rating'))  # Сбор всех данных определённого поля автора
-        temp_sum_p = 0
-        temp_sum_p += post_sum.get('postRating')
-        # Вычисление суммарного рейтинга комментариев автора
-        comment_sum = self.autUser.comment_set.aggregate(commentRating=Sum('rating'))
-        temp_sum_c = 0
-        temp_sum_c += comment_sum.get('commentRating')
+        pRat = 0  # Инициализируем переменную pRat со значением 0
+        pRat += post_rating  # Увеличиваем значение переменной pRat на значение post_rating
 
-        self.ratingAut = temp_sum_p * 3 + temp_sum_c
-        self.save()
+        cRat = 0  # Инициализируем переменную cRat со значением 0
+        cRat += comment_rating  # Увеличиваем значение переменной cRat на значение comment_rating
 
-    # для удобного отображения на странице администратора
+        self.rating = pRat * 3 + cRat  # Расчет обновленного рейтинга автора
+        self.save()  # Сохранение изменений
+
     def __str__(self):
-        return self.autUser.username
+        return self.user.username
 
 
-class Category(models.Model):
-    name = models.CharField(max_length=128, unique=True)
+class Category(models.Model):  # Определяем модель Category, наследуясь от models.Model
+    name = models.CharField(max_length=255, unique=True)  # Поле name типа CharField с максимальной длиной 255 символов и уникальным значением
 
-    # для отображения имён вместо объектов
     def __str__(self):
-        return self.name
+        return f'{self.name}'
 
 
-class Post(models.Model):
-    """
-    Метод preview() возвращает начало статьи длиной 124 символа с многоточием в конце
-    Методы like() и dislike() увеличивают/уменьшают рейтинг на единицу.
-    """
-    ARTICLE = 'AR'
-    NEWS = 'NW'
-    CATEGOY_CHOICES = (
-        ('AR', 'Статья'),
-        ('NW', 'Новость'),
-    )
-    author = models.ForeignKey(Author, on_delete=models.CASCADE)  # Поле Автор
-    type = models.CharField(max_length=2, choices=CATEGOY_CHOICES, default=ARTICLE)  # Поле выбора новость / статья
-    creationDate = models.DateTimeField(auto_now_add=True)  # Авто добавление даты создания
-    postCategory = models.ManyToManyField(Category, through='PostCategory')
-    title = models.CharField(max_length=128)
-    content = models.TextField()
-    rating = models.SmallIntegerField(default=0)
+class Post(models.Model):  # Определяем модель Post, наследуясь от models.Model
+    news = 'news'
+    post = 'post'
 
-    def like(self):
-        self.rating += 1
-        self.save()
+    POST_TYPES = [  # Кортеж POST_TYPES с определенными вариантами выбора
+        (news, 'Новость'),
+        (post, 'Статья')
+    ]
+    author = models.ForeignKey(Author,on_delete=models.CASCADE)  # Поле author типа ForeignKey, связанное с моделью Author
+    post_type = models.CharField(max_length=10, choices=POST_TYPES, default=news)  # Поле post_type типа CharField с максимальной длиной 10 символов и выбором из POST_TYPES
+    created_at = models.DateTimeField(auto_now_add=True)  # Поле created_at типа DateTimeField с автоматическим добавлением текущей даты и времени при создании
+    categories = models.ManyToManyField(Category, through='PostCategory')  # Связь "многие ко многим" с моделью Category через модель PostCategory
+    title = models.CharField(max_length=255)  # Поле title типа CharField с максимальной длиной 255 символов
+    content = models.TextField()  # Поле content типа TextField
+    rating = models.IntegerField(default=0)  # Поле rating типа IntegerField с значением по умолчанию 0
 
-    def dislike(self):
-        self.rating -= 1
-        self.save()
+    def like(self):  # Определяем метод like
+        self.rating += 1  # Увеличиваем значение рейтинга на 1
+        self.save()  # Сохранение изменений
 
-    def preview(self):
-        return f'{self.content[:123]} ...'
+    def dislike(self):  # Определяем метод dislike
+        self.rating -= 1  # Уменьшаем значение рейтинга на 1
+        self.save()  # Сохранение изменений
 
-    # для удобного отображения на странице администратора
+    def preview(self):  # Определяем метод preview
+        return f'{self.content[:124]} ...'    # Возвращаем превью содержимого поста с добавлением рейтинга
+
     def __str__(self):
-        return self.title
+        return f'{self.title}: {self.content}'
 
-    # какую страницу нужно открыть после создания
     def get_absolute_url(self):
-        return reverse('Start', args=[str(self.id)])
+        return reverse('post:post_detail', args=[str(self.id)])
 
 
-class PostCategory(models.Model):
-    postThrough = models.ForeignKey(Post, on_delete=models.CASCADE)
-    categoryThrough = models.ForeignKey(Category, on_delete=models.CASCADE)
-
-    # для удобного отображения на странице администратора
-    def __str__(self):
-        return self.postThrough
+class PostCategory(models.Model):  # Определяем модель PostCategory, наследуясь от models.Model
+    post = models.ForeignKey(Post, on_delete=models.CASCADE)  # Поле post типа ForeignKey, связанное с моделью Post
+    category = models.ForeignKey(Category, on_delete=models.CASCADE)  # Поле category типа ForeignKey, связанное с моделью Category
 
 
-class Comment(models.Model):
-    """
-    Методы like() и dislike() увеличивают/уменьшают рейтинг на единицу.
-    """
-    commentPost = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='comments')
-    commentUser = models.ForeignKey(User, on_delete=models.CASCADE)
-    text = models.TextField()
-    dateCreation = models.DateTimeField(auto_now_add=True)
-    rating = models.SmallIntegerField(default=0)
+class Comment(models.Model):  # Определяем модель Comment, наследуясь от models.Model
+    post = models.ForeignKey(Post, on_delete=models.CASCADE)  # Поле post типа ForeignKey, связанное с моделью Post
+    user = models.ForeignKey(User, on_delete=models.CASCADE)  # Поле user типа ForeignKey, связанное с моделью User
+    text = models.TextField()  # Поле text типа TextField
+    created_at = models.DateTimeField(auto_now_add=True)  # Поле created_at типа DateTimeField с автоматическим добавлением текущей даты и времени при создании
+    rating = models.IntegerField(default=0)  # Поле rating типа IntegerField с значением по умолчанию 0
 
-    def like(self):
-        self.rating += 1
-        self.save()
+    def like(self):  # Определяем метод like
+        self.rating += 1  # Увеличиваем значение рейтинга на 1
+        self.save()  # Сохранение изменений
 
-    def dislike(self):
-        self.rating -= 1
-        self.save()
+    def dislike(self):  # Определяем метод dislike
+        self.rating -= 1  # Уменьшаем значение рейтинга на 1
+        self.save()  # Сохранение изменений
 
-    # для удобного отображения на странице администратора
     def __str__(self):
         return self.text
