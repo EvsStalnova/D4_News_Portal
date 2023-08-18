@@ -26,6 +26,7 @@ class Author(models.Model):  # Определяем модель Author, нас�
 
 
 class Category(models.Model):  # Определяем модель Category, наследуясь от models.Model
+
     name = models.CharField(max_length=255, unique=True)  # Поле name типа CharField с максимальной длиной 255 символов и уникальным значением
 
     def __str__(self):
@@ -40,6 +41,7 @@ class Post(models.Model):  # Определяем модель Post, насле�
         (news, 'Новость'),
         (post, 'Статья')
     ]
+
     author = models.ForeignKey(Author,on_delete=models.CASCADE)  # Поле author типа ForeignKey, связанное с моделью Author
     post_type = models.CharField(max_length=10, choices=POST_TYPES, default=news)  # Поле post_type типа CharField с максимальной длиной 10 символов и выбором из POST_TYPES
     created_at = models.DateTimeField(auto_now_add=True)  # Поле created_at типа DateTimeField с автоматическим добавлением текущей даты и времени при создании
@@ -88,3 +90,16 @@ class Comment(models.Model):  # Определяем модель Comment, на�
 
     def __str__(self):
         return self.text
+    
+
+class Subscription(models.Model):
+    user = models.ForeignKey(
+        to=User,
+        on_delete=models.CASCADE,
+        related_name='subscriptions',
+    )
+    category = models.ForeignKey(
+        to='Category',
+        on_delete=models.CASCADE,
+        related_name='subscriptions',
+    )

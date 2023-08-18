@@ -22,9 +22,20 @@ class SignUpForm(UserCreationForm):
             "password2",
         )
 
-class CustomSignupForm(SignupForm):
-    def save(self, request):  # выполняется при успешном заполнении формы регистрации.
+
+class CustomSignUpForm(SignupForm):
+    def save(self, request):
         user = super().save(request)
-        authors= Group.objects.get(name="authors")  # получаем объект модели группы с названием common users
-        user.groups.add(authors)  # добавляем нового пользователя в эту группу
+
+        subject = 'Добро пожаловать на наш новостной портал!'
+        text = f'{user.username}, Вы успешно зарегистрировались на нашем новостном портале!'
+        html = (
+            f'<b>{user.username}</b>, Вы успешно зарегистрировались на '
+            f'<a href="http://127.0.0.1:8000/post">нашем новостном портале!</a>'
+        )
+        msg = EmailMultiAlternatives(
+            subject=subject, body=text, from_email=settings.DEFAULT_FROM_EMAIL, to=[user.email]
+        )
+        msg.attach_alternative(html, "text/html")
+        msg.send()
         return user
