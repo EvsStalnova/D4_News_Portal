@@ -14,15 +14,16 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+
 from django.contrib import admin
 from django.urls import path, include
-
+from NewsPaper.views import subscriptions
 
 urlpatterns = [
-   path('admin/', admin.site.urls),
-   path('pages/', include('django.contrib.flatpages.urls')),
-   # Делаем так, чтобы все адреса из нашего приложения (newPortal/urls.py)
-   # подключались к главному приложению с префиксом news/.
-   path('', include('newPortal.urls')),
-   path("accounts/", include("allauth.urls")),
+    path('admin/', admin.site.urls),
+    path('news/', include('NewsPaper.urls')),
+    path('articles/', include('NewsPaper.urls')),
+    path('accounts/', include('allauth.urls')),
+    path('subscriptions/', subscriptions, name='subscriptions')
+
 ]
