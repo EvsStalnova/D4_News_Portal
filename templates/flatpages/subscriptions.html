@@ -1,0 +1,32 @@
+{% extends 'flatpages/default.html' %}
+
+{% block title %}
+Subscriptions
+{% endblock title %}
+
+{% block content %}
+<h3>Подпишитесь на нашу рассылку!</h3>
+<h6>После подписки Вам на почту будут приходить два вида писем:</h6>
+<h6>О новой публикации в Вашей любимой категории</h6>
+<h6>и</h6>
+<h6>Наша еженедельная рассылка, с последними публикациями за неделю!</h6>
+<h6>Не забывайте проверять почту!</h6>
+<hr>
+    {% for category in categories  %}
+        <p>
+            <p><span style="text-decoration: underline;"><em>{{ category.name }}</em></span></p>
+            <form method="post">
+                {% csrf_token %}
+                <input type="hidden" name="category_id" value="{{ category.id }}" />
+
+                {% if category.user_subscribed %}
+                    <button disabled>Подписаться</button>
+                    <button name="action" value="unsubscribe">Отписаться</button>
+                {% else %}
+                    <button name="action" value="subscribe">Подписаться</button>
+                    <button disabled>Отписаться</button>
+                {% endif %}
+            </form>
+        </p>
+    {% endfor %}
+{% endblock content %}

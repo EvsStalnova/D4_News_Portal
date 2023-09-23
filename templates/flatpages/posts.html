@@ -1,0 +1,33 @@
+{% extends 'flatpages/default.html' %}
+
+{% load custom_filters %}
+
+{% block title %}
+Post
+{% endblock title %}
+{% load cache %}
+    {% cache 30 header %}
+        {% block content %}
+        <h1>Breaking News</h1>
+        <hr>
+        <h5>Тема публикации: {{ posts.title|censor }}</h5>
+        <hr>
+        <h6>Дата публикации: {{ posts.dateCreation|date:'d M Y' }}</h6>
+        <h6>Автор: {{ posts.author }}</h6>
+        <td>
+        <h6>    Категория: {% for cat in posts.postCategory.all %}
+                            {{ cat.name }}</h6>
+                       {% endfor %}
+        </td>
+        {% if posts %}
+        <hr>
+                <table align="center">
+                    <tr>
+                        <td>{{ posts.text|censor}}</td>
+                    </tr>
+                </table>
+            {% else %}
+                <h2>Новостей нет!</h2>
+            {% endif %}
+        {% endblock content %}
+    {% endcache %}

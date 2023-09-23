@@ -1,0 +1,14 @@
+{% extends 'flatpages/default.html' %}
+{% load cache %}
+    {% cache 30 header %}
+        {% block content %}
+        <h3 style="text-align: center;"><span style="text-decoration: underline;"><em>Вы уверены, что хотите удалить публикацию?</em></span></h3>
+        <hr>
+        <form action="" method="post">
+            {% csrf_token %}
+            <p>{{ post }}</p>
+            {{ form.as_p }}
+            <input type="submit" value="Delete" />
+        </form>
+        {% endblock content %}
+    {% endcache %}

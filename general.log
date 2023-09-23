@@ -1,0 +1,88 @@
+2023-09-23 13:10:29,753 INFO autoreload Watching for file changes with StatReloader
+2023-09-23 13:11:18,672 INFO autoreload C:\Users\skropotin\PycharmProjects\BreakingNews\NewsPaper\News\views.py changed, reloading.
+2023-09-23 13:11:21,190 INFO autoreload Watching for file changes with StatReloader
+2023-09-23 13:11:50,351 INFO autoreload C:\Users\skropotin\PycharmProjects\BreakingNews\NewsPaper\News\views.py changed, reloading.
+2023-09-23 13:11:52,276 INFO autoreload Watching for file changes with StatReloader
+2023-09-23 13:12:45,042 INFO basehttp "GET /admin/ HTTP/1.1" 200 15307
+2023-09-23 13:12:47,497 INFO basehttp "POST /admin/logout/ HTTP/1.1" 200 3576
+2023-09-23 13:12:53,774 INFO basehttp "GET /accounts/login/ HTTP/1.1" 200 1831
+2023-09-23 13:13:02,124 INFO basehttp "POST /accounts/login/ HTTP/1.1" 302 0
+2023-09-23 13:13:02,147 INFO basehttp "GET /post HTTP/1.1" 301 0
+2023-09-23 13:13:02,304 INFO basehttp "GET /post/ HTTP/1.1" 200 14097
+2023-09-23 13:13:08,064 WARNING basehttp "GET /post/4/update/ HTTP/1.1" 403 260
+2023-09-23 13:13:25,100 WARNING basehttp "GET /post/4545 HTTP/1.1" 404 179
+2023-09-23 13:13:49,339 INFO autoreload C:\Users\skropotin\PycharmProjects\BreakingNews\NewsPaper\News\views.py changed, reloading.
+2023-09-23 13:13:51,488 INFO autoreload Watching for file changes with StatReloader
+2023-09-23 13:13:52,232 ERROR log Internal Server Error: /post/
+Traceback (most recent call last):
+  File "C:\Users\skropotin\PycharmProjects\BreakingNews\venv\lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\skropotin\PycharmProjects\BreakingNews\venv\lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\skropotin\PycharmProjects\BreakingNews\venv\lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "C:\Users\skropotin\PycharmProjects\BreakingNews\venv\lib\site-packages\django\views\generic\base.py", line 143, in dispatch
+    return handler(request, *args, **kwargs)
+  File "C:\Users\skropotin\PycharmProjects\BreakingNews\venv\lib\site-packages\django\views\generic\list.py", line 154, in get
+    self.object_list = self.get_queryset()
+  File "C:\Users\skropotin\PycharmProjects\BreakingNews\NewsPaper\News\views.py", line 23, in get_queryset
+    queryset = super().get_queryse()
+AttributeError: 'super' object has no attribute 'get_queryse'
+2023-09-23 13:13:52,359 ERROR basehttp "GET /post/ HTTP/1.1" 500 145
+2023-09-23 13:14:21,389 ERROR log Internal Server Error: /post/
+Traceback (most recent call last):
+  File "C:\Users\skropotin\PycharmProjects\BreakingNews\venv\lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\skropotin\PycharmProjects\BreakingNews\venv\lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\skropotin\PycharmProjects\BreakingNews\venv\lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "C:\Users\skropotin\PycharmProjects\BreakingNews\venv\lib\site-packages\django\views\generic\base.py", line 143, in dispatch
+    return handler(request, *args, **kwargs)
+  File "C:\Users\skropotin\PycharmProjects\BreakingNews\venv\lib\site-packages\django\views\generic\list.py", line 154, in get
+    self.object_list = self.get_queryset()
+  File "C:\Users\skropotin\PycharmProjects\BreakingNews\NewsPaper\News\views.py", line 23, in get_queryset
+    queryset = super().get_queryset()
+AttributeError: 'super' object has no attribute 'get_queryse'
+2023-09-23 13:14:21,555 ERROR basehttp "GET /post/ HTTP/1.1" 500 145
+2023-09-23 13:14:21,606 INFO autoreload C:\Users\skropotin\PycharmProjects\BreakingNews\NewsPaper\News\views.py changed, reloading.
+2023-09-23 13:14:25,182 INFO autoreload Watching for file changes with StatReloader
+2023-09-23 13:14:29,021 INFO basehttp "GET /post/ HTTP/1.1" 200 14097
+2023-09-23 13:14:36,772 INFO basehttp "GET /admin/ HTTP/1.1" 302 0
+2023-09-23 13:14:36,899 INFO basehttp "GET /admin/login/?next=/admin/ HTTP/1.1" 200 3863
+2023-09-23 13:14:43,379 INFO basehttp "POST /admin/login/?next=/admin/ HTTP/1.1" 200 3898
+2023-09-23 13:29:29,645 INFO basehttp "POST /admin/login/?next=/admin/ HTTP/1.1" 302 0
+2023-09-23 13:29:29,684 INFO basehttp "GET /admin/ HTTP/1.1" 200 15307
+2023-09-23 13:29:35,060 INFO basehttp "GET /post/ HTTP/1.1" 200 16978
+2023-09-23 13:34:12,397 INFO autoreload Watching for file changes with StatReloader
+2023-09-23 13:34:38,172 WARNING basehttp "GET / HTTP/1.1" 404 179
+2023-09-23 13:34:52,363 INFO basehttp "GET /post/ HTTP/1.1" 200 16978
+2023-09-23 13:35:34,587 INFO autoreload C:\Users\skropotin\PycharmProjects\BreakingNews\NewsPaper\News\views.py changed, reloading.
+2023-09-23 13:35:36,637 INFO autoreload Watching for file changes with StatReloader
+2023-09-23 13:36:22,767 INFO autoreload C:\Users\skropotin\PycharmProjects\BreakingNews\NewsPaper\News\views.py changed, reloading.
+2023-09-23 13:36:24,377 INFO autoreload Watching for file changes with StatReloader
+2023-09-23 13:36:30,306 INFO basehttp "GET /post/35 HTTP/1.1" 200 4718
+2023-09-23 13:37:53,896 INFO autoreload C:\Users\skropotin\PycharmProjects\BreakingNews\NewsPaper\News\views.py changed, reloading.
+2023-09-23 13:37:55,566 INFO autoreload Watching for file changes with StatReloader
+2023-09-23 13:38:05,216 INFO autoreload Watching for file changes with StatReloader
+2023-09-23 13:38:13,455 ERROR log Internal Server Error: /post/4/update/
+Traceback (most recent call last):
+  File "C:\Users\skropotin\PycharmProjects\BreakingNews\venv\lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\skropotin\PycharmProjects\BreakingNews\venv\lib\site-packages\django\core\handlers\base.py", line 220, in _get_response
+    response = response.render()
+  File "C:\Users\skropotin\PycharmProjects\BreakingNews\venv\lib\site-packages\django\template\response.py", line 114, in render
+    self.content = self.rendered_content
+  File "C:\Users\skropotin\PycharmProjects\BreakingNews\venv\lib\site-packages\django\template\response.py", line 90, in rendered_content
+    template = self.resolve_template(self.template_name)
+  File "C:\Users\skropotin\PycharmProjects\BreakingNews\venv\lib\site-packages\django\template\response.py", line 72, in resolve_template
+    return select_template(template, using=self.using)
+  File "C:\Users\skropotin\PycharmProjects\BreakingNews\venv\lib\site-packages\django\template\loader.py", line 47, in select_template
+    raise TemplateDoesNotExist(", ".join(template_name_list), chain=chain)
+django.template.exceptions.TemplateDoesNotExist: flatpages/post_updates.html
+2023-09-23 13:38:13,523 ERROR basehttp "GET /post/4/update/ HTTP/1.1" 500 145
+2023-09-23 13:38:32,856 INFO autoreload C:\Users\skropotin\PycharmProjects\BreakingNews\NewsPaper\News\views.py changed, reloading.
+2023-09-23 13:38:34,678 INFO autoreload Watching for file changes with StatReloader
+2023-09-23 13:38:37,359 INFO basehttp "GET /post/4/update/ HTTP/1.1" 200 33907
+2023-09-23 13:38:37,452 WARNING basehttp "GET /post/4/update/assets/favicon.ico HTTP/1.1" 404 179
+2023-09-23 13:38:43,196 INFO basehttp "GET /post/ HTTP/1.1" 200 16978

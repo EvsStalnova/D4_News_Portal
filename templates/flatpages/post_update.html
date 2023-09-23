@@ -1,0 +1,14 @@
+{% extends 'flatpages/default.html' %}
+{% load cache %}
+    {% cache 30 header %}
+        {% block content %}
+        <h3 style="text-align: center;"><span style="text-decoration: underline;"><em>Решили что-то изменить?</em></span></h3>
+        <hr>
+        <form action="" method="post">
+            {% csrf_token %}
+            <p>{{ post }}</p>
+            {{ form.as_p }}
+            <input type="submit" value="Update"/>
+        </form>
+        {% endblock content %}
+    {% endcache %}

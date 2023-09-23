@@ -1,0 +1,14 @@
+{% extends 'flatpages/default.html' %}
+{% load cache %}
+    {% cache 30 header %}
+        {% block content %}
+        <h3 style="text-align: center;"><span style="text-decoration: underline;"><em>Здесь Вы можете написать свою статью</em></span></h3>
+        <h6 style="text-align: center;"><span style="text-decoration: underline;"><em>Вы Автор и мы надеемся на получение достоверной информации от Вас</em></span></h6>
+        <hr>
+        <form action="" method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <input type="submit" value="Save" />
+        </form>
+        {% endblock content %}
+    {% endcache %}
